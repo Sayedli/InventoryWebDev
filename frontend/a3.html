@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Car Inventory RESTful API Documentation</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootswatch/4.5.2/superhero/bootstrap.min.css">
+    <style>
+        body {
+            background-image: url('viewimage.jpg'); /* Add your carbon fiber background image here */
+            color: #fff;
+        }
+        .container {
+            margin-top: 20px;
+            background-color: rgba(37, 213, 134, 0.7);
+            padding: 20px;
+            border-radius: 8px;
+        }
+        .endpoint {
+            margin-bottom: 20px;
+        }
+        pre {
+            background-color: #1c1c1c;
+            color: #fff;
+            padding: 15px;
+            border-radius: 8px;
+        }
+        h1, h2, h3, h4 {
+            color: #200031;
+        }
+        .navbar-brand {
+            color: #00e143 !important;
+        }
+        .navbar-metallic-purple {
+            background-color: #0a0052;
+        }
+        .footer {
+            background-color: #0a0052;
+            color: #fff;
+            padding: 10px 0;
+            text-align: center;
+            position: relative;
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-metallic-purple">
+        <a class="navbar-brand" href="#">Car Inventory API</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item"><a class="nav-link" href="#get-all-cars">Get All Cars</a></li>
+                <li class="nav-item"><a class="nav-link" href="#get-car-by-id">Get Car by ID</a></li>
+                <li class="nav-item"><a class="nav-link" href="#create-car">Create Car</a></li>
+                <li class="nav-item"><a class="nav-link" href="#update-car">Update Car</a></li>
+                <li class="nav-item"><a class="nav-link" href="#delete-car">Delete Car</a></li>
+                <li class="nav-item"><a class="nav-link" href="#move-car-to-workshop">Move Car to Workshop</a></li>
+                <li class="nav-item"><a class="nav-link" href="#complete-modification">Complete Modification</a></li>
+            </ul>
+        </div>
+    </nav>
+    <div class="container">
+        <h1>Car Inventory RESTful API Documentation</h1>
+        <p>Welcome to the Car Inventory API documentation. This API allows you to manage a car inventory, including creating, reading, updating, and deleting car records. Below you'll find the necessary information to effectively utilize the API, including URL design, sample examples, and input/output specifications.</p>
+
+        <h2>Base URL</h2>
+        <p>All endpoints are relative to the base URL:</p>
+        <pre>http://localhost:2000</pre>
+
+        <h2 id="endpoints">Endpoints</h2>
+
+        <h3>Web Service 1: Inventory</h3>
+        
+        <div id="get-all-cars" class="endpoint">
+            <h4>Get All Cars</h4>
+            <p>Retrieve a list of all cars in the inventory.</p>
+            <h5>Request</h5>
+            <pre>GET /cars</pre>
+            <h5>Response</h5>
+            <pre>
+{
+    "status": "success",
+    "data": [
+        {
+            "id": 1,
+            "manufacturer": "Toyota",
+            "model": "Camry",
+            "year": 2020,
+            "color": "Red",
+            "price": 25000,
+            "mileage": 15000
+        },
+        ...
+    ]
+}
+            </pre>
+        </div>
+
+        <div id="get-car-by-id" class="endpoint">
+            <h4>Get Car by ID</h4>
+            <p>Retrieve details of a specific car by its ID.</p>
+            <h5>Request</h5>
+            <pre>GET /cars/{id}</pre>
+            <h5>Response</h5>
+            <pre>
+{
+    "status": "success",
+    "data": {
+        "id": 1,
+        "manufacturer": "Toyota",
+        "model": "Camry",
+        "year": 2020,
+        "color": "Red",
+        "price": 25000,
+        "mileage": 15000
+    }
+}
+            </pre>
+        </div>
+
+        <div id="create-car" class="endpoint">
+            <h4>Create a New Car</h4>
+            <p>Add a new car to the inventory.</p>
+            <h5>Request</h5>
+            <pre>POST /cars</pre>
+            <h5>Body</h5>
+            <pre>
+{
+    "manufacturer": "Toyota",
+    "model": "Camry",
+    "year": 2020,
+    "color": "Red",
+    "price": 25000,
+    "mileage": 15000
+}
+            </pre>
+            <h5>Response</h5>
+            <pre>
+{
+    "status": "success",
+    "message": "Car added successfully",
+    "data": {
+        "id": 1,
+        "manufacturer": "Toyota",
+        "model": "Camry",
+        "year": 2020,
+        "color": "Red",
+        "price": 25000,
+        "mileage": 15000
+    }
+}
+            </pre>
+        </div>
+
+        <div id="update-car" class="endpoint">
+            <h4>Update a Car</h4>
+            <p>Update the details of an existing car by its ID.</p>
+            <h5>Request</h5>
+            <pre>PUT /cars/{id}</pre>
+            <h5>Body</h5>
+            <pre>
+{
+    "manufacturer": "Toyota",
+    "model": "Camry",
+    "year": 2020,
+    "color": "Blue",
+    "price": 26000,
+    "mileage": 14000
+}
+            </pre>
+            <h5>Response</h5>
+            <pre>
+{
+    "status": "success",
+    "message": "Car updated successfully",
+    "data": {
+        "id": 1,
+        "manufacturer": "Toyota",
+        "model": "Camry",
+        "year": 2020,
+        "color": "Blue",
+        "price": 26000,
+        "mileage": 14000
+    }
+}
+            </pre>
+        </div>
+
+        <div id="delete-car" class="endpoint">
+            <h4>Delete a Car</h4>
+            <p>Delete a car from the inventory by its ID.</p>
+            <h5>Request</h5>
+            <pre>DELETE /cars/{id}</pre>
+            <h5>Response</h5>
+            <pre>
+{
+    "status": "success",
+    "message": "Car deleted successfully"
+}
+            </pre>
+        </div>
+
+        <h3>Web Service 2: Workshop</h3>
+
+        <div id="move-car-to-workshop" class="endpoint">
+            <h4>Move Car to Workshop</h4>
+            <p>Move a car to the workshop by its ID.</p>
+            <h5>Request</h5>
+            <pre>PUT /cars/{id}/workshop</pre>
+            <h5>Response</h5>
+            <pre>
+{
+    "status": "success",
+    "message": "Car moved to workshop successfully"
+}
+            </pre>
+        </div>
+
+        <div id="complete-modification" class="endpoint">
+            <h4>Complete Modification</h4>
+            <p>Mark a car modification as complete by its ID.</p>
+            <h5>Request</h5>
+            <pre>PUT /modifications/{id}/complete</pre>
+            <h5>Response</h5>
+            <pre>
+{
+    "status": "success",
+    "message": "Modification completed successfully"
+}
+            </pre>
+        </div>
+    </div>
+    <footer class="footer">
+        <div class="container">
+            <span>&copy; 2024 Car Inventory API</span>
+        </div>
+    </footer>
+</body>
+</html>
