@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootswatch/4.5.2/superhero/bootstrap.min.css">
+    <style>
+        body {
+            background-image: url('background.jpg'); 
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            color: white; 
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            margin: 0;
+        }
+        .navbar-metallic-grey {
+            background-color: #105b27; 
+        }
+        .navbar-brand, .nav-link {
+            color: white !important;
+        }
+        .navbar-brand {
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+        .container {
+            flex: 1;
+            background-color: rgba(17, 68, 26, 0.8); 
+            padding: 20px;
+            border-radius: 8px;
+            max-height: 700px; 
+            overflow-y: auto; 
+        }
+        .footer {
+            background-color: #105b27 !important; 
+            color: white;
+            padding: 1rem 0;
+            text-align: center;
+            width: 100%; 
+            position: relative;
+            z-index: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .footer .container {
+            padding: 0;
+            margin: 0;
+            background-color: #105b27 !important; 
+        }
+
+        .year-dropdown-container {
+            position: relative;
+        }
+
+    </style>
+    <title>Create Car</title>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-metallic-grey">
+        <a class="navbar-brand" href="#">Car Inventory</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item"><a class="nav-link" href="create.html">Create</a></li>
+                <li class="nav-item"><a class="nav-link" href="read.html">Read</a></li>
+                <li class="nav-item"><a class="nav-link" href="update.html">Update</a></li>
+                <li class="nav-item"><a class="nav-link" href="delete.html">Delete</a></li>
+            </ul>
+        </div>
+    </nav>
+    <div class="container mt-4">
+        <h1>Create Car</h1>
+        <div id="createMessage"></div>
+        <form id="createCarForm">
+            <div class="form-group">
+                <label for="manufacturer">Manufacturer</label>
+                <input type="text" class="form-control" id="manufacturer" required>
+            </div>
+            <div class="form-group">
+                <label for="model">Model</label>
+                <input type="text" class="form-control" id="model" required>
+            </div>
+            <div class="form-group year-dropdown-container">
+                <label for="year">Year</label>
+                <select class="form-control" id="year" required>
+                    <!-- Options will be populated by JavaScript -->
+                </select>
+                <div class="year-dropdown-menu"></div>
+            </div>
+            <div class="form-group">
+                <label for="color">Color</label>
+                <input type="text" class="form-control" id="color" required>
+            </div>
+            <div class="form-group">
+                <label for="price">Price</label>
+                <input type="number" step="0.01" class="form-control" id="price" required>
+            </div>
+            <div class="form-group">
+                <label for="mileage">Mileage</label>
+                <input type="number" step="0.01" class="form-control" id="mileage" required>
+            </div>
+            <button type="submit" class="btn btn-primary">Add Car</button>
+        </form>
+    </div>
+    <footer class="footer mt-auto">
+        <div class="container">
+            <span>&copy; 2024 Car Inventory</span>
+        </div>
+    </footer>
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            // Populate the year dropdown
+            const currentYear = new Date().getFullYear();
+            const startYear = 1970;
+            const yearSelect = $('#year');
+            for (let year = currentYear; year >= startYear; year--) {
+                yearSelect.append(`<option value="${year}">${year}</option>`);
+            }
+
+            $('#createCarForm').on('submit', function(event) {
+                event.preventDefault();
+        
+                const carData = {
+                    manufacturer: $('#manufacturer').val(),
+                    model: $('#model').val(),
+                    year: $('#year').val(),
+                    color: $('#color').val(),
+                    price: $('#price').val(),
+                    mileage: $('#mileage').val()
+                };
+        
+                $.ajax({
+                    url: `http://localhost:2000/cars`,
+                    type: 'POST',
+                    contentType: 'application/json',
+                    data: JSON.stringify(carData),
+                    success: function(response) {
+                        $('#createMessage').html('<div class="alert alert-success">Car added successfully!</div>');
+                        $('#createCarForm')[0].reset();
+                    },
+                    error: function(error) {
+                        $('#createMessage').html('<div class="alert alert-danger">Error adding car.</div>');
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
