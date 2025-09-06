@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootswatch/4.5.2/superhero/bootstrap.min.css">
+    <style>
+        body {
+            background-image: url('background.jpg'); /* Add your carbon fiber background image here */
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            color: white; /* Ensuring text is visible on dark background */
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            margin: 0;
+        }
+        .navbar-metallic-purple {
+            background-color: #6A0DAD; /* Metallic purple color */
+        }
+        .navbar-brand, .nav-link {
+            color: white !important;
+        }
+        .navbar-brand {
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+        .container {
+            flex: 1;
+            background-color: rgba(47, 47, 47, 0.9); /* Dark grey with 70% transparency */
+            padding: 20px;
+            border-radius: 8px;
+        }
+        .footer {
+            background-color: #6A0DAD !important; /* Metallic purple */
+            color: white;
+            padding: 1rem 0;
+            text-align: center;
+            width: 100%; /* Ensure the footer spans the full width */
+            position: relative;
+            z-index: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .footer .container {
+            padding: 0;
+            margin: 0;
+            width: 100%;
+            background-color: #6A0DAD !important; /* Ensure the inner container is also metallic purple */
+        }
+    </style>
+    <title>Update Car</title>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-metallic-purple">
+        <a class="navbar-brand" href="#">Car Inventory</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item"><a class="nav-link" href="create.html">Create</a></li>
+                <li class="nav-item"><a class="nav-link" href="read.html">Read</a></li>
+                <li class="nav-item"><a class="nav-link" href="update.html">Update</a></li>
+                <li class="nav-item"><a class="nav-link" href="delete.html">Delete</a></li>
+            </ul>
+        </div>
+    </nav>
+    <div class="container mt-4">
+        <h1>Update Car</h1>
+        <div id="updateMessage"></div>
+        <form id="selectCarForm">
+            <div class="form-group">
+                <label for="carSelect">Select Car to Update</label>
+                <select class="form-control" id="carSelect" required>
+                    <!-- Options will be populated here -->
+                </select>
+            </div>
+            <button type="submit" class="btn btn-primary">Load Car Data</button>
+        </form>
+        <form id="updateCarForm" style="display:none;">
+            <input type="hidden" id="id">
+            <div class="form-group">
+                <label for="manufacturer">Manufacturer</label>
+                <input type="text" class="form-control" id="manufacturer" required>
+            </div>
+            <div class="form-group">
+                <label for="model">Model</label>
+                <input type="text" class="form-control" id="model" required>
+            </div>
+            <div class="form-group">
+                <label for="year">Year</label>
+                <input type="number" class="form-control" id="year" required>
+            </div>
+            <div class="form-group">
+                <label for="color">Color</label>
+                <input type="text" class="form-control" id="color" required>
+            </div>
+            <div class="form-group">
+                <label for="price">Price</label>
+                <input type="number" step="0.01" class="form-control" id="price" required>
+            </div>
+            <div class="form-group">
+                <label for="mileage">Mileage</label>
+                <input type="number" step="0.01" class="form-control" id="mileage" required>
+            </div>
+            <button type="submit" class="btn btn-success">Update Car</button>
+        </form>
+    </div>
+    <footer class="footer mt-auto">
+        <div class="container">
+            <span>&copy; 2024 Car Inventory</span>
+        </div>
+    </footer>
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="../backend/update.js"></script>
+</body>
+</html>

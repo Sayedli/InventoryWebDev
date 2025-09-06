@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootswatch/4.5.2/superhero/bootstrap.min.css">
+    <style>
+        body {
+            background-image: url('background.jpg'); /* Add your carbon fiber background image here */
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            color: white; /* Ensuring text is visible on dark background */
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            margin: 0;
+        }
+        .navbar-metallic-blue {
+            background-color: #4b1111; /* Metallic blue color */
+        }
+        .navbar-brand, .nav-link {
+            color: white !important;
+        }
+        .navbar-brand {
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+        .container {
+            flex: 1;
+            background-color: rgba(41, 6, 6, 0.9); /* Grey with 70% transparency */
+            padding: 20px;
+            border-radius: 8px;
+        }
+        .footer {
+            background-color: black; /* Set footer color to black */
+            color: white;
+            padding: 1rem 0;
+            text-align: center;
+            width: 100%;
+            position: relative;
+            z-index: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .footer .container {
+            padding: 0;
+            margin: 0;
+            background-color: black; /* Ensure the container inside the footer is also black */
+        }
+        .sortable-header {
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+        }
+        .sortable-header span {
+            margin-right: 5px;
+        }
+        .sortable-header button {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1rem;
+            margin: 0;
+            padding: 0;
+            vertical-align: middle;
+        }
+    </style>
+    <title>Read Cars</title>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-metallic-blue">
+        <a class="navbar-brand" href="#">Car Inventory</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item"><a class="nav-link" href="create.html">Create</a></li>
+                <li class="nav-item"><a class="nav-link" href="read.html">Read</a></li>
+                <li class="nav-item"><a class="nav-link" href="update.html">Update</a></li>
+                <li class="nav-item"><a class="nav-link" href="delete.html">Delete</a></li>
+                <li class="nav-item"><a class="nav-link" href="workshop.html">Workshop</a></li>
+            </ul>
+        </div>
+    </nav>
+    <div class="container mt-4">
+        <h1>Read Cars</h1>
+        <input type="text" id="searchCar" class="form-control" placeholder="Search for a car">
+        <table class="table table-striped mt-4">
+            <thead>
+                <tr>
+                    <th>Manufacturer</th>
+                    <th>Model</th>
+                    <th class="sortable-header" data-sort="year"><span>Year</span> <button id="sortYear" class="btn btn-link btn-sm">&#9650;</button></th>
+                    <th>Color</th>
+                    <th class="sortable-header" data-sort="price"><span>Price</span> <button id="sortPrice" class="btn btn-link btn-sm">&#9650;</button></th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody id="carTable">
+                <!-- Data will be populated here -->
+            </tbody>
+        </table>
+
+        <h2>Workshop</h2>
+        <table class="table table-striped mt-4">
+            <thead>
+                <tr>
+                    <th>Manufacturer</th>
+                    <th>Model</th>
+                    <th class="sortable-header" data-sort="year"><span>Year</span> <button id="sortYearWorkshop" class="btn btn-link btn-sm">&#9650;</button></th>
+                    <th>Color</th>
+                    <th class="sortable-header" data-sort="price"><span>Price</span> <button id="sortPriceWorkshop" class="btn btn-link btn-sm">&#9650;</button></th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody id="workshopTable">
+                <!-- Data will be populated here -->
+            </tbody>
+        </table>
+    </div>
+    <footer class="footer mt-auto">
+        <div class="container">
+            <span>&copy; 2024 Car Inventory</span>
+        </div>
+    </footer>
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="../backend/read.js"></script>
+</body>
+</html>
