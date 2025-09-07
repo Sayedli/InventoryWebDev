@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootswatch/4.5.2/superhero/bootstrap.min.css">
+    <style>
+        body {
+            background-image: url('background.jpg');
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            color: white;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            margin: 0;
+        }
+        .navbar-metallic-grey {
+            background-color: #105b27;
+        }
+        .navbar-brand, .nav-link {
+            color: white !important;
+        }
+        .container {
+            flex: 1;
+            background-color: rgba(17, 68, 26, 0.8);
+            padding: 20px;
+            border-radius: 8px;
+            max-height: 650px;
+            overflow-y: auto;
+        }
+        .footer {
+            background-color: #105b27 !important;
+            color: white;
+            padding: 1rem 0;
+            text-align: center;
+            width: 100%;
+            position: relative;
+            z-index: 1;
+        }
+        .footer .container {
+            padding: 0;
+            margin: 0;
+            width: 100%;
+            background-color: #105b27 !important;
+        }
+    </style>
+    <title>Workshop</title>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-metallic-grey">
+        <a class="navbar-brand" href="#">Car Inventory</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item"><a class="nav-link" href="create.html">Create</a></li>
+                <li class="nav-item"><a class="nav-link" href="read.html">Read</a></li>
+                <li class="nav-item"><a class="nav-link" href="update.html">Update</a></li>
+                <li class="nav-item"><a class="nav-link" href="delete.html">Delete</a></li>
+                <li class="nav-item"><a class="nav-link" href="workshop.html">Workshop</a></li>
+            </ul>
+        </div>
+    </nav>
+    <div class="container mt-4">
+        <h1>Workshop</h1>
+        <div id="workshopMessage"></div>
+        <form id="addModificationForm">
+            <div class="form-group">
+                <label for="carId">Car ID</label>
+                <input type="number" class="form-control" id="carId" required>
+            </div>
+            <div class="form-group">
+                <label for="modification">Modification</label>
+                <input type="text" class="form-control" id="modification" required>
+            </div>
+            <button type="submit" class="btn btn-primary">Add Modification</button>
+        </form>
+        <h2 class="mt-4">Modifications</h2>
+        <table class="table table-striped mt-4">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Car ID</th>
+                    <th>Modification</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody id="modificationTable">
+                <!-- Modifications will be populated here -->
+            </tbody>
+        </table>
+    </div>
+    <footer class="footer mt-auto">
+        <div class="container">
+            <span>&copy; 2024 Car Inventory</span>
+        </div>
+    </footer>
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const carId = urlParams.get('carId');
+            if (carId) {
+                $('#carId').val(carId);
+            }
+
+            function loadModifications() {
+                if (!carId) return;
+
+                $.ajax({
+                    url: `http://localhost:2000/cars/${carId}/modifications`,
+                    type: 'GET',
+                    success: function (response) {
+                        let modificationTableHtml = '';
+                        response.forEach(modification => {
+                            modificationTableHtml += `
+                                <tr>
+                                    <td>${modification.id}</td>
+                                    <td>${modification.car_id}</td>
+                                    <td>${modification.modification}</td>
+                                    <td>
+                                        <button class="btn btn-success btn-sm complete-modification" data-id="${modification.id}">Complete</button>
+                                        <button class="btn btn-danger btn-sm delete-modification" data-id="${modification.id}">Delete</button>
+                                    </td>
+                                </tr>
+                            `;
+                        });
+
+                        $('#modificationTable').html(modificationTableHtml);
+                    },
+                    error: function (error) {
+                        console.error('Error fetching modifications:', error);
+                    }
+                });
+            }
+
+            loadModifications();
+
+            $('#addModificationForm').on('submit', function (e) {
+                e.preventDefault();
+
+                const modificationData = {
+                    car_id: $('#carId').val(),
+                    modification: $('#modification').val()
+                };
+
+                $.ajax({
+                    url: 'http://localhost:2000/modifications',
+                    type: 'POST',
+                    contentType: 'application/json',
+                    data: JSON.stringify(modificationData),
+                    success: function (response) {
+                        $('#workshopMessage').html('<div class="alert alert-success">Modification added successfully!</div>');
+                        loadModifications();
+                        window.location.href = `read.html`;
+                    },
+                    error: function (error) {
+                        $('#workshopMessage').html('<div class="alert alert-danger">Error adding modification.</div>');
+                    }
+                });
+            });
+
+            $('#modificationTable').on('click', '.complete-modification', function () {
+                const modificationId = $(this).data('id');
+                const carId = $('#carId').val();
+
+                $.ajax({
+                    url: `http://localhost:2000/cars/${carId}/complete`,
+                    type: 'PUT',
+                    success: function () {
+                        $('#workshopMessage').html('<div class="alert alert-success">Modification completed successfully!</div>');
+                        loadModifications();
+                    },
+                    error: function (error) {
+                        $('#workshopMessage').html('<div class="alert alert-danger">Error completing modification.</div>');
+                    }
+                });
+            });
+
+            $('#modificationTable').on('click', '.delete-modification', function () {
+                const modificationId = $(this).data('id');
+
+                $.ajax({
+                    url: `http://localhost:2000/modifications/${modificationId}`,
+                    type: 'DELETE',
+                    success: function () {
+                        loadModifications();
+                    },
+                    error: function (error) {
+                        console.error('Error deleting modification:', error);
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
